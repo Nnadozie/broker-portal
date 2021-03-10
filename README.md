@@ -1,4 +1,9 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). It uses Apollo's graphql client for state management, and basic css for styling.
+
+You can check it out here: [broker-portal.vercel.app](https://broker-portal.vercel.app/)
+
+
+![image](https://user-images.githubusercontent.com/15310842/110663185-8207f780-81c6-11eb-82c2-13855dc65a8c.png)
 
 ## Available Scripts
 
