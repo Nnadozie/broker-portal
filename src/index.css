@@ -46,6 +46,9 @@ code {
     min-width: 40%;
     max-width: 40%;
   }
+  .md-heading {
+    font-size: 2rem;
+  }
 }
 
 @media (min-width: 1200px) {

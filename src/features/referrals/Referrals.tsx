@@ -41,14 +41,14 @@ export function Referrals(props: Props) {
         }}
       >
         <NavLink
-          className={styles.link}
+          className={`${styles.link} md-heading`}
           activeClassName={styles["link-active"]}
           to={routes.referrals.client}
         >
           Client referrals
         </NavLink>
         <NavLink
-          className={styles.link}
+          className={`${styles.link} md-heading`}
           activeClassName={styles["link-active"]}
           to={routes.referrals.agent}
         >
