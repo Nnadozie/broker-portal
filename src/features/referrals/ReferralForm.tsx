@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { joiResolver } from "@hookform/resolvers/joi";
 import { Pagination, ReferralFormSchema, ReferralType } from "types";
@@ -6,6 +6,7 @@ import { useQuery } from "@apollo/client";
 import { client } from "apollo/client";
 import * as queries from "apollo/queries";
 import { v4 as uuidv4 } from "uuid";
+import styles from "./Referrals.module.css";
 
 type Prop = {
   referralType: ReferralType;
@@ -123,9 +124,17 @@ const ReferralForm = (props: Prop) => {
   return (
     <>
       {loading && <h2>Loading...</h2>}
+      {JSON.stringify(error) || JSON.stringify(errorList)}
       {referral && (
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <p>to {props.referralType}</p>
+        <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+          <p className={styles.link}>Add {props.referralType} referral</p>
+
+          <label
+            className={styles.link}
+            style={{ fontSize: "1.5rem", border: 0 }}
+          >
+            Referral's information
+          </label>
           <input
             type="text"
             placeholder="First Name"
@@ -133,6 +142,7 @@ const ReferralForm = (props: Prop) => {
             defaultValue={referral?.firstName}
             ref={register}
           />
+          {errors.firstName && errors.firstName.message}
           <input
             type="text"
             placeholder="Last name"
@@ -140,6 +150,8 @@ const ReferralForm = (props: Prop) => {
             defaultValue={referral?.lastName}
             ref={register}
           />
+          {errors.lastName && errors.lastName.message}
+
           <input
             type="tel"
             placeholder="Phone number"
@@ -147,6 +159,8 @@ const ReferralForm = (props: Prop) => {
             defaultValue={referral?.phone}
             ref={register}
           />
+          {errors.phoneNumber && errors.phoneNumber.message}
+
           <input
             type="text"
             placeholder="Email"
@@ -154,29 +168,58 @@ const ReferralForm = (props: Prop) => {
             defaultValue={referral?.email}
             ref={register}
           />
-          <input type="text" placeholder="Zip" name="zip" ref={register} />
-          <fieldset style={{ float: "left" }}>
-            <legend>Referral's Interest</legend>
-            {"Health Insurance,Ancillary Products,Medicare,Short Term Medical"
-              .split(",")
-              .map((interest, index) => {
-                return (
-                  <label key={interest}>
-                    <input
-                      type="checkbox"
-                      value={interest}
-                      name={"referralInterest"}
-                      defaultChecked={true}
-                      ref={register}
-                    />
-                    {interest}
-                  </label>
-                );
-              })}
-          </fieldset>
-          <textarea name="notes" placeholder="Add Notes" ref={register} />
+          {errors.email && errors.email.message}
 
-          <input type="submit" />
+          <input type="text" placeholder="Zip" name="zip" ref={register} />
+          {errors.zip && errors.zip.message}
+
+          <label
+            className={styles.link}
+            style={{ fontSize: "1.5rem", border: 0 }}
+          >
+            Referral's interest
+          </label>
+          {"Health Insurance,Ancillary Products,Medicare,Short Term Medical"
+            .split(",")
+            .map((interest, index) => {
+              return (
+                <label key={interest}>
+                  <input
+                    type="checkbox"
+                    value={interest}
+                    name={"referralInterest"}
+                    defaultChecked={true}
+                    ref={register}
+                  />
+                  {interest}
+                </label>
+              );
+            })}
+          {errors.referralInterest && errors.referralInterest.message}
+
+          <label
+            className={styles.link}
+            style={{ fontSize: "1.5rem", border: 0 }}
+          >
+            Notes
+          </label>
+          <textarea name="notes" placeholder="Add Notes" ref={register} />
+          {errors.notes && errors.notes.message}
+
+          <button
+            type="submit"
+            className={"btn"}
+            style={{
+              marginTop: "2rem",
+              width: "100%",
+              textAlign: "center",
+              padding: "1rem 0",
+              fontWeight: 700,
+              fontSize: "1rem",
+            }}
+          >
+            Add referral
+          </button>
         </form>
       )}
     </>

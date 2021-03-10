@@ -6,7 +6,7 @@ import ReferralForm from "./ReferralForm";
 import * as queries from "apollo/queries";
 import { useQuery } from "@apollo/client";
 import ReferralRow from "./ReferralRow";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { routes } from "types";
 
 type Props = {};
@@ -34,29 +34,86 @@ export function Referrals(props: Props) {
 
   return (
     <>
-      <nav>
-        <Link to={routes.referrals.client}>Client Referrals</Link>{" "}
-        <Link to={routes.referrals.agent}>Broker/Agent Referrals</Link>
+      <nav
+        style={{
+          display: "flex",
+          width: "80%",
+        }}
+      >
+        <NavLink
+          className={styles.link}
+          activeClassName={styles["link-active"]}
+          to={routes.referrals.client}
+        >
+          Client referrals
+        </NavLink>
+        <NavLink
+          className={styles.link}
+          activeClassName={styles["link-active"]}
+          to={routes.referrals.agent}
+        >
+          Broker/Agent referrals
+        </NavLink>
       </nav>
-      <header>
-        emails sent: {data?.users.total || "..."}, conversions: 0, your
-        earnings: ${data?.users.total * 50 || "..."}
+      <header className={styles.header}>
+        <div className={styles["header-item"]}>
+          <p>
+            Emails sent<br></br>
+            <span>{data?.users.total / 2 || "..."}</span>
+          </p>
+        </div>
+        <div className={styles["header-item"]}>
+          <p>
+            Conversions<span>0</span>
+          </p>
+        </div>
+        <div className={styles["header-item"]}>
+          <p>
+            Your earnings<span>{(data?.users.total * 50) / 2 || "..."}</span>
+          </p>
+        </div>
       </header>
-      <main>
-        <input placeholder={"search"}></input>
-        <button ref={returnFocus} onClick={openModal}>
-          add referral
-        </button>
-        {loading && <h2>Loading...</h2>}
-        {error && (
-          <p>An error occurred while fetching your data. Please try again.</p>
-        )}
-        {data?.users.data.map(({ id }: { id: string }) => {
-          return <ReferralRow id={id} referralType={referralType} key={id} />;
-        })}
-      </main>
-      <footer>
+      <main className={styles.main}>
+        <input style={{ display: "none" }} placeholder={"search"}></input>
         <button
+          className={styles.btn}
+          style={{
+            marginTop: "2rem",
+            padding: "1.5rem 6rem",
+            fontSize: "1.1rem",
+          }}
+          ref={returnFocus}
+          onClick={openModal}
+        >
+          Add referral
+        </button>
+        <table className={styles.table}>
+          <thead>
+            <tr>
+              <th>First name</th>
+              <th>Last name</th>
+              <th>Phone</th>
+              <th>Email</th>
+            </tr>
+          </thead>
+          <tbody>
+            {loading && <h2>Loading...</h2>}
+            {error && (
+              <p>
+                An error occurred while fetching your data. Please try again.
+              </p>
+            )}
+            {data?.users.data.map(({ id }: { id: string }) => {
+              return (
+                <ReferralRow id={id} referralType={referralType} key={id} />
+              );
+            })}
+          </tbody>
+        </table>
+      </main>
+      <footer style={{ display: "flex", marginTop: "2rem" }}>
+        <button
+          className={"btn"}
           onClick={(e) => {
             e.preventDefault();
             referralType === "client"
@@ -76,12 +133,13 @@ export function Referrals(props: Props) {
         >
           Back
         </button>
-        <p>
+        <p style={{ width: "3rem", textAlign: "center" }}>
           {referralType === "client"
             ? clientPagination.page + 1
             : brokerPagination.page - 9}
         </p>
         <button
+          className={"btn"}
           onClick={(e) => {
             e.preventDefault();
             referralType === "client"

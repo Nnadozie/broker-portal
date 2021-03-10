@@ -2,6 +2,7 @@ import { useQuery } from "@apollo/client";
 import React from "react";
 import * as queries from "apollo/queries";
 import { ReferralType } from "types";
+import styles from "./Referrals.module.css";
 
 type Prop = {
   id: string;
@@ -13,10 +14,19 @@ const ReferralRow = ({ id, referralType }: Prop) => {
   const { loading, error, data } = useQuery(
     referralType === "client" ? queries.GET_CLIENT(id) : queries.GET_BROKER(id)
   );
+
+  const { user } = data || {};
   return (
     <>
-      {loading && <h2>Loading...</h2>}
-      {JSON.stringify(data)}
+      {loading && <p>Loading...</p>}
+      {data && (
+        <tr className={styles.tr}>
+          <td>{user.firstName}</td>
+          <td>{user.lastName}</td>
+          <td>{user.phone}</td>
+          <td>{user.email}</td>
+        </tr>
+      )}
       {JSON.stringify(error)}
     </>
   );
